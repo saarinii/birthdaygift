@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday, My Love!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #ff6b9d;
+    --yellow: #ffe066;
+    --mint: #6ee7c0;
+    --purple: #b388ff;
+    --bg: #fff9f5;
+    --dark: #1a1128;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  #cursor {
+    position: fixed;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--pink);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: left 0.05s, top 0.05s;
+    mix-blend-mode: multiply;
+  }
+
+  .confetti-piece {
+    position: fixed;
+    top: -20px;
+    animation: fall linear infinite;
+    pointer-events: none;
+    z-index: 1000;
+    border-radius: 2px;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); }
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 2rem;
+    padding: 1rem;
+    z-index: 100;
+    background: rgba(255,249,245,0.85);
+    backdrop-filter: blur(8px);
+  }
+  nav a {
+    font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; color: var(--dark);
+    padding: 6px 14px; border-radius: 999px;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+  }
+  nav a:hover { border-color: var(--pink); color: var(--pink); }
+
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-tag {
+    font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--pink);
+    background: #ffe8f2;
+    padding: 6px 18px; border-radius: 999px;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    animation: popIn 0.5s 0.2s both;
+  }
+  h1 {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 1;
+    animation: popIn 0.6s 0.4s both;
+  }
+  h1 .highlight {
+    background: var(--yellow);
+    padding: 0 0.2em;
+    border-radius: 8px;
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: #888;
+    margin-top: 1.2rem;
+    max-width: 420px;
+    animation: popIn 0.6s 0.6s both;
+  }
+  .hero-btn {
+    margin-top: 2.5rem;
+    display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: popIn 0.6s 0.8s both;
+  }
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500;
+    padding: 14px 32px; border-radius: 999px; border: none;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary { background: var(--dark); color: white; }
+  .btn-secondary { background: var(--yellow); color: var(--dark); }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .btn:active { transform: scale(0.97); }
+
+  .floating-emoji {
+    position: absolute; font-size: 2.5rem;
+    animation: floatAnim ease-in-out infinite;
+    pointer-events: none; user-select: none;
+  }
+  @keyframes floatAnim {
+    0%,100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-22px) rotate(5deg); }
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+  }
+
+  section {
+    padding: 6rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--pink); margin-bottom: 0.75rem;
+  }
+  h2 {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  #carousel {
+    margin-top: 2rem;
+    position: relative;
+  }
+  .car-track {
+    position: relative;
+    width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--dark);
+    aspect-ratio: 4/3;
+  }
+  .car-slide {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  .car-slide.active { opacity: 1; pointer-events: all; }
+  .car-slide img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 24px;
+  }
+  .car-slide .placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+    background: #2a1f3d;
+    border-radius: 24px;
+  }
+  .car-caption {
+    position: relative; z-index: 2;
+    width: 100%;
+    padding: 2rem 2rem 1.8rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+    border-radius: 0 0 24px 24px;
+  }
+  .car-number {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--pink); margin-bottom: 6px;
+  }
+  .car-reason {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(1.3rem, 3.5vw, 2.2rem);
+    color: white;
+    line-height: 1.15;
+  }
+  .car-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.5rem; margin-top: 1.2rem;
+  }
+  .car-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px; font-weight: 500;
+    width: 48px; height: 48px;
+    border-radius: 50%; border: 1.5px solid #ede8ff;
+    background: white; color: var(--dark);
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .car-btn:hover { background: var(--pink); border-color: var(--pink); color: white; transform: scale(1.08); }
+  .car-counter { font-size: 14px; color: #aaa; font-weight: 500; min-width: 50px; text-align: center; }
+  .car-dots {
+    display: flex; gap: 6px; justify-content: center; margin-top: 1rem; flex-wrap: wrap;
+  }
+  .car-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #e0d9f5; cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .car-dot.active { background: var(--pink); transform: scale(1.3); }
+
+  #letter {
+    background: var(--dark);
+    color: white;
+    border-radius: 28px;
+    padding: 4rem 3rem;
+    max-width: 900px;
+    margin: 0 auto 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #letter::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(179,136,255,0.18), transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(255,107,157,0.14), transparent 50%);
+  }
+  #letter .section-label { color: var(--mint); }
+  #letter h2 { color: white; }
+  .letter-body {
+    font-size: 1.1rem; line-height: 1.85;
+    color: rgba(255,255,255,0.82);
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .letter-body .big-quote {
+    font-family: 'Dela Gothic One', sans-serif;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    color: var(--yellow);
+    display: block;
+    margin: 1.5rem 0;
+    line-height: 1.2;
+  }
+
+  #music .vibe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-top: 2rem;
+  }
+  .track-card {
+    background: white;
+    border: 1.5px solid #ede8ff;
+    border-radius: 16px;
+    padding: 1.2rem;
+    display: flex; flex-direction: column; gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .track-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.08); border-color: var(--purple); }
+  .track-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .track-title { font-weight: 500; font-size: 14px; color: var(--dark); }
+  .track-desc { font-size: 12px; color: #999; }
+
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    font-size: 14px;
+    color: #bbb;
+  }
+  footer .heart {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1rem;
+    animation: heartbeat 1.2s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    30% { transform: scale(1.25); }
+    50% { transform: scale(1.1); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.65s, transform 0.65s;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 600px) {
+    #letter { padding: 2.5rem 1.5rem; }
+    nav { gap: 0.75rem; }
+    .car-reason { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="confetti"></div>
+
+<nav>
+  <a href="#gallery">Gallery</a>
+  <a href="#letter">Love note</a>
+</nav>
+
+<section id="hero">
+  <div class="floating-emoji" style="top:12%;left:8%;animation-duration:3.2s;animation-delay:0s">🎉</div>
+  <div class="floating-emoji" style="top:18%;right:10%;animation-duration:2.8s;animation-delay:0.4s">🎂</div>
+  <div class="floating-emoji" style="bottom:18%;left:12%;animation-duration:3.5s;animation-delay:0.8s">🎈</div>
+  <div class="floating-emoji" style="bottom:22%;right:8%;animation-duration:3s;animation-delay:1.2s">✨</div>
+
+  <div class="hero-tag">🎊 Today is all about you</div>
+  <h1>Happy <span class="highlight">Birthday</span>,<br>Venus Flytrap</h1>
+  <p class="hero-sub">You deserve a whole party on the internet. So here it is — just for you.</p>
+  <div class="hero-btn">
+    <a href="#gallery" class="btn btn-primary">Reasons</a>
+    <a href="#letter" class="btn btn-secondary">Read my note</a>
+  </div>
+</section>
+
+<section id="gallery" class="reveal">
+  <div class="section-label">📸 Why I love you</div>
+  <h2>16 reasons, in pictures</h2>
+
+  <div id="carousel">
+    <div class="car-track" id="carTrack"></div>
+    <div class="car-nav">
+      <button class="car-btn" id="prevBtn">←</button>
+      <span class="car-counter" id="carCounter">1 / 16</span>
+      <button class="car-btn" id="nextBtn">→</button>
+    </div>
+  </div>
+</section>
+
+<div id="letter" class="reveal">
+  <div style="position:relative;z-index:1;">
+    <div class="section-label">💌 From the heart</div>
+    <h2>A love note, written just for you</h2>
+    <div class="letter-body">
+      <p>You are genuinely one of a kind. The way you exist — weird, warm, funny, and so completely yourself — is one of my favourite things in the world.</p>
+      <span class="big-quote">"You didn't just walk into my life. You made it so much better."</span>
+      <p>Today is all about you. The football, the chaos, the laughs, the insane experiences — all of it. I'm so glad I get to be around for it.</p>
+      <p style="margin-top:1.2rem;">Happy Birthday. You deserve everything. 🥂</p>
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <span class="heart">❤️</span>
+  Made with love, just for you. Happy Birthday!
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  const colors = ['#ff6b9d','#ffe066','#6ee7c0','#b388ff','#ff9f7e'];
+  const container = document.getElementById('confetti');
+  for(let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random()*100 + 'vw';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.width = (8 + Math.random()*10) + 'px';
+    el.style.height = (8 + Math.random()*10) + 'px';
+    el.style.animationDuration = (4 + Math.random()*6) + 's';
+    el.style.animationDelay = (Math.random()*8) + 's';
+    el.style.opacity = 0.7 + Math.random()*0.3;
+    container.appendChild(el);
+  }
+
+  const reasons = [
+    "we need to go out and eat",
+    "sweetest boy",
+    "we can exist in any way together",
+    "you are weird",
+    "i love whatever is wrong with you",
+    "hottest guy ever",
+    "we are inseparable",
+    "the fam loves you",
+    "i am the happiest with you",
+    "shared insane experiences",
+    "now i like everything you like",
+    "we were meant to happen",
+    "we are iconic",
+    "fav footballer",
+    "look at us",
+    "my peace"
+  ];
+
+  const track = document.getElementById('carTrack');
+  const counter = document.getElementById('carCounter');
+  let current = 0;
+
+  // build slides
+  reasons.forEach((reason, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'car-slide' + (i === 0 ? ' active' : '');
+    slide.innerHTML = `
+      <img src="photos/photo${i+1}.jpg" alt="reason ${i+1}"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="placeholder" style="display:none">📷</div>
+      <div class="car-caption">
+        <div class="car-number">reason ${String(i+1).padStart(2,'0')}</div>
+        <div class="car-reason">${reason}</div>
+      </div>`;
+    track.appendChild(slide);
+  });
+
+  // dots
+  const dotsEl = document.createElement('div');
+  dotsEl.className = 'car-dots';
+  reasons.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'car-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+  document.getElementById('carousel').appendChild(dotsEl);
+
+  function goTo(n) {
+    document.querySelectorAll('.car-slide')[current].classList.remove('active');
+    document.querySelectorAll('.car-dot')[current].classList.remove('active');
+    current = (n + reasons.length) % reasons.length;
+    document.querySelectorAll('.car-slide')[current].classList.add('active');
+    document.querySelectorAll('.car-dot')[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + reasons.length;
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+
+  // keyboard nav
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+
+</script>
+
+</body>
+</html>
